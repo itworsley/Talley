@@ -1,3 +1,17 @@
 <resources>
-    <string name="app_name">Project 2</string>
+    <string name="app_name">Talley</string>
+    <string name="logo_description">Talley Logo</string>
+
+    <!--  Headers  -->
+    <string name="header_create_profile">Create your profile</string>
+
+
+    <!--  Text Prompts  -->
+    <string name="prompt_name">Name</string>
+    <string name="prompt_email_address">Email Address</string>
+    <string name="prompt_contact_number">Contact Number</string>
+
+
+    <!--  Button Text  -->
+    <string name="button_save">Save</string>
 </resources>
