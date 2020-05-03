@@ -31,6 +31,7 @@
 
 
     <!--  Descriptions  -->
-    <string name="clock_description">Time remaining</string>
-    <string name="expand_arrow_description">Show/Hide more details</string>
+    <string name="description_clock">Time remaining</string>
+    <string name="description_expand_arrow">Show/Hide more details</string>
+    <string name="description_device_icon">Device Icon</string>
 </resources>
