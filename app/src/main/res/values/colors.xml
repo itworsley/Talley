@@ -5,6 +5,10 @@
     <color name="colorAccent">#FF4081</color>
     <color name="darkBlue">#3023AE</color>
     <color name="purple">#C86DD7</color>
+    <color name="darkGrey">#424242</color>
+    <color name="mediumGrey">#808080</color>
+    <color name="lightGrey">#CCCCCC</color>
+    <color name="iconPurple">#7D49C3</color>
 
 
     <color name="loginFormDetails">#CCFFFFFF</color>

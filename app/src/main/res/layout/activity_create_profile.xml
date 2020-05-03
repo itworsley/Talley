@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_login_gradient"
+    android:background="@drawable/bg_gradient"
     tools:context=".ui.CreateProfileActivity">
 
     <ImageView
@@ -98,6 +98,7 @@
         android:shadowColor="@color/transparent"
         android:elevation="0dp"
         android:background="@drawable/bg_login_button"
+        android:onClick="saveProfile"
         android:text="@string/button_save"
         android:textAllCaps="false"
         android:textColor="@color/loginFormDetailsMedium"

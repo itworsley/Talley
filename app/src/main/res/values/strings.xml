@@ -4,14 +4,33 @@
 
     <!--  Headers  -->
     <string name="header_create_profile">Create your profile</string>
+    <string name="header_devices">My Devices</string>
+    <string name="header_add_a_device">Add a Device</string>
 
 
     <!--  Text Prompts  -->
     <string name="prompt_name">Name</string>
     <string name="prompt_email_address">Email Address</string>
     <string name="prompt_contact_number">Contact Number</string>
+    <string name="prompt_purchase_date">Purchase Date</string>
+    <string name="prompt_warranty_period">Warranty Period</string>
 
+    <string name="prompt_device_name">Device Name</string>
+    <string name="prompt_device_type">Device Type</string>
+    <string name="prompt_device_vendor">Vendor</string>
+    <string name="prompt_device_price">Price</string>
+    <string name="prompt_device_warranty_period">Warranty Period</string>
+    <string name="prompt_device_date_of_purchase">Date of Purchase</string>
+
+    <!--  Format Strings  -->
+    <string name="format_purchase_date">Purchase Date: %s</string>
+    <string name="format_warranty_period">Warranty Period: %s</string>
 
     <!--  Button Text  -->
     <string name="button_save">Save</string>
+
+
+    <!--  Descriptions  -->
+    <string name="clock_description">Time remaining</string>
+    <string name="expand_arrow_description">Show/Hide more details</string>
 </resources>
