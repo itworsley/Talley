@@ -26,7 +26,13 @@ class Device (
     @ColumnInfo(name = "vendor") val vendor: String,
 
     @NotNull
-    @ColumnInfo(name = "warranty_period_days") val warrantyPeriodDays: Int
+    @ColumnInfo(name = "warranty_period_days") val warrantyPeriodDays: Int,
+
+
+    @ColumnInfo(name = "receipt_image_uri") val receiptImageUri: String,
+
+
+    @ColumnInfo(name = "device_image_uri") val deviceImageUri: String
 )
 
 @Dao

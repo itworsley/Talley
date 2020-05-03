@@ -192,6 +192,7 @@ class CreateDeviceActivity : AppCompatActivity() {
 
             imageView.foreground = null
             imageView.setImageURI(imageUri)
+            imageView.tag = imageUri.toString()
         }
     }
 
@@ -217,6 +218,8 @@ class CreateDeviceActivity : AppCompatActivity() {
         val price = findViewById<TextInputEditText>(R.id.text_input_price).text.toString().toInt()
         var warrantyValue = findViewById<TextInputEditText>(R.id.text_input_warranty_period).text.toString().toLong()
         val dateOfPurchase = findViewById<TextInputEditText>(R.id.text_input_date_of_purchase).text.toString()
+        val receiptUri = findViewById<ImageView>(R.id.device_receipt).tag.toString()
+        val deviceImageUri = findViewById<ImageView>(R.id.device_image).tag.toString()
 
 
         when(warrantyUnit) {
@@ -225,7 +228,7 @@ class CreateDeviceActivity : AppCompatActivity() {
             "Years" -> warrantyValue = (warrantyValue * 365)
         }
 
-        val device = Device(null, name, type, dateOfPurchase, price, vendor, warrantyValue.toInt())
+        val device = Device(null, name, type, dateOfPurchase, price, vendor, warrantyValue.toInt(), receiptUri, deviceImageUri)
 
         deviceViewModel.insert(device).invokeOnCompletion {
             finish()
