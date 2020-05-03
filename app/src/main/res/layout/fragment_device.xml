@@ -50,6 +50,7 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -114,6 +115,29 @@
             android:textColor="@color/mediumGrey"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/dollar_image"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="4dp"
+            android:contentDescription="@string/description_price"
+            android:tint="@color/mediumGrey"
+            app:layout_constraintEnd_toStartOf="@+id/device_price"
+            app:layout_constraintTop_toBottomOf="@+id/device_warranty_period"
+            app:srcCompat="@drawable/ic_attach_money_black_24dp" />
+
+        <TextView
+            android:id="@+id/device_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/prompt_device_price"
+            android:textColor="@color/mediumGrey"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/device_warranty_period" />
 
 
         <androidx.constraintlayout.widget.Guideline

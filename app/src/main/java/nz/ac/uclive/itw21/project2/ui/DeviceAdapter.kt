@@ -34,6 +34,7 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
         holder.deviceName.text = currentItem.deviceName
         holder.deviceWarrantyPeriod.text = calculateWarrantyPeriodRemaining(currentItem.warrantyPeriodDays, currentItem.dateOfPurchase)
         holder.deviceTypeText.text = currentItem.type
+        holder.devicePrice.text = currentItem.price.toString()
         handleDeviceIcon(holder, currentItem)
 
         // Used to handle viewing more details.
@@ -96,6 +97,7 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
         val deviceName: TextView = itemView.findViewById(R.id.device_name)
         //        val devicePurchaseDate: TextView = itemView.findViewById(R.id.device_purchase_date)
         val deviceWarrantyPeriod: TextView = itemView.findViewById(R.id.device_warranty_period)
+        val devicePrice: TextView = itemView.findViewById(R.id.device_price)
         val deviceTypeText: TextView = itemView.findViewById(R.id.device_type)
     }
 

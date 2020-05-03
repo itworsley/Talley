@@ -20,7 +20,7 @@ class Device (
     @ColumnInfo(name = "date_of_purchase") val dateOfPurchase: String,
 
     @NotNull
-    @ColumnInfo(name = "price_at_purchase") val price: Int,
+    @ColumnInfo(name = "price_at_purchase") val price: Double,
 
     @NotNull
     @ColumnInfo(name = "vendor") val vendor: String,

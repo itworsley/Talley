@@ -170,7 +170,6 @@ class CreateDeviceActivity : AppCompatActivity() {
 
     }
 
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -215,7 +214,7 @@ class CreateDeviceActivity : AppCompatActivity() {
         val name = findViewById<TextInputEditText>(R.id.text_input_device_name).text.toString()
         val type = deviceType
         val vendor = findViewById<TextInputEditText>(R.id.text_input_vendor).text.toString()
-        val price = findViewById<TextInputEditText>(R.id.text_input_price).text.toString().toInt()
+        val price = findViewById<TextInputEditText>(R.id.text_input_price).text.toString().toDouble()
         var warrantyValue = findViewById<TextInputEditText>(R.id.text_input_warranty_period).text.toString().toLong()
         val dateOfPurchase = findViewById<TextInputEditText>(R.id.text_input_date_of_purchase).text.toString()
         val receiptUri = findViewById<ImageView>(R.id.device_receipt).tag.toString()
