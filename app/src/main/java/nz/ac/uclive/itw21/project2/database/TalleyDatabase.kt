@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 
 
 @Database(entities = [Profile::class, Device::class], version = 1, exportSchema = false)
-public abstract class TalleyDatabase : RoomDatabase() {
+abstract class TalleyDatabase : RoomDatabase() {
     abstract fun profileDao(): ProfileDao
     abstract fun deviceDao(): DeviceDao
 

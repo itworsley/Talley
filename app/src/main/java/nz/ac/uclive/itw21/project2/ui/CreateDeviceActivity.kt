@@ -1,18 +1,25 @@
 package nz.ac.uclive.itw21.project2.ui
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import com.google.android.material.textfield.TextInputEditText
 import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Device
 import nz.ac.uclive.itw21.project2.database.DeviceViewModel
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -23,6 +30,13 @@ class CreateDeviceActivity : AppCompatActivity() {
 
     private lateinit var deviceType: String
     private lateinit var warrantyUnit: String
+    private lateinit var imageView: ImageView
+    private lateinit var deviceImageView: ImageView
+    private lateinit var imageUri: Uri
+    lateinit var currentPhotoPath: String
+
+    private val permissionCode = 1000
+    private val imageRequestCode = 1001
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +52,16 @@ class CreateDeviceActivity : AppCompatActivity() {
         setUpTypeDropdown()
         setUpWarrantyUnitDropdown()
         setUpDateClicker()
+
+        deviceImageView = findViewById<ImageView>(R.id.device_image)
+        deviceImageView.setOnClickListener {
+            imageView = it as ImageView
+            handleAddPhotos()
+        }
+        val receiptImageView = findViewById<ImageView>(R.id.device_receipt).setOnClickListener {
+            imageView = it as ImageView
+            handleAddPhotos()
+        }
     }
 
     private fun setUpTypeDropdown() {
@@ -90,7 +114,6 @@ class CreateDeviceActivity : AppCompatActivity() {
         }
 
         dateField.setOnClickListener {
-            Log.d("ITW_DEBUG", "CLICKED")
             val calendar = Calendar.getInstance()
             val year = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH)
@@ -99,6 +122,91 @@ class CreateDeviceActivity : AppCompatActivity() {
             val dialog = DatePickerDialog(this, dateSetListener, year, month, day)
 
             dialog.show()
+        }
+    }
+
+    private fun handleAddPhotos() {
+        if (checkSelfPermission(android.Manifest.permission.CAMERA) ==
+            PackageManager.PERMISSION_DENIED || checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+            PackageManager.PERMISSION_DENIED) {
+            // Request permissions
+            val permission = arrayOf(
+                android.Manifest.permission.CAMERA,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+            requestPermissions(permission, permissionCode)
+        } else {
+            // Permission already granted
+            openCamera()
+        }
+    }
+
+
+    private fun openCamera() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    // Error occurred while creating the File
+                    Toast.makeText(this, "Failed to save image...", Toast.LENGTH_SHORT).show()
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        this,
+                        "nz.ac.uclive.itw21.project2",
+                        it
+                    )
+                    imageUri = photoURI
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, imageRequestCode)
+                }
+            }
+        }
+
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            permissionCode -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera()
+            } else {
+                Toast.makeText(this, "Permission denied...", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == imageRequestCode && resultCode == Activity.RESULT_OK) {
+
+            imageView.foreground = null
+            imageView.setImageURI(imageUri)
+        }
+    }
+
+    @Throws(IOException::class)
+    fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_",
+            ".jpg",
+            storageDir
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
         }
     }
 
@@ -118,7 +226,6 @@ class CreateDeviceActivity : AppCompatActivity() {
         }
 
         val device = Device(null, name, type, dateOfPurchase, price, vendor, warrantyValue.toInt())
-        Log.d("ITW_DEBUG", device.toString())
 
         deviceViewModel.insert(device).invokeOnCompletion {
             finish()

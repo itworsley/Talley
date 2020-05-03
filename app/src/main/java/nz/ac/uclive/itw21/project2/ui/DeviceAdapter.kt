@@ -6,10 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -53,21 +50,20 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
             "PC" -> holder.deviceTypeIcon.setImageDrawable(itemView.resources.getDrawable(R.drawable.device_pc, itemView.context.applicationContext.theme))
             "Phone" -> holder.deviceTypeIcon.setImageDrawable(itemView.resources.getDrawable(R.drawable.device_smartphone, itemView.context.applicationContext.theme))
             "Tablet" -> holder.deviceTypeIcon.setImageDrawable(itemView.resources.getDrawable(R.drawable.device_tablet, itemView.context.applicationContext.theme))
-            "TV" -> holder.deviceTypeIcon.setImageDrawable(itemView.resources.getDrawable(R.drawable.device_tablet, itemView.context.applicationContext.theme))
-            "Watch" -> holder.deviceTypeIcon.setImageDrawable(itemView.resources.getDrawable(R.drawable.device_tv, itemView.context.applicationContext.theme))
+            "TV" -> holder.deviceTypeIcon.setImageDrawable(itemView.resources.getDrawable(R.drawable.device_tv, itemView.context.applicationContext.theme))
+            "Watch" -> holder.deviceTypeIcon.setImageDrawable(itemView.resources.getDrawable(R.drawable.device_watch, itemView.context.applicationContext.theme))
             else -> holder.deviceTypeIcon.setImageDrawable(itemView.resources.getDrawable(R.drawable.device_other, itemView.context.applicationContext.theme))
         }
     }
 
 
     private fun calculateWarrantyPeriodRemaining(warrantyPeriodDays: Int, dateOfPurchase: String): String {
-        Log.d("ITW_DEBUG", warrantyPeriodDays.toString())
         val c = Calendar.getInstance()
         c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(dateOfPurchase)
 
         c.add(Calendar.DAY_OF_MONTH, warrantyPeriodDays)
         val days = TimeUnit.DAYS.convert(c.time.time - Date().time, TimeUnit.MILLISECONDS)
-        Log.d("ITW_DEBUG", days.toString())
+
         if (days > 365) {
             return "${(days / 365)} y."
         }

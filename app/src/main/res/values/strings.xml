@@ -6,6 +6,8 @@
     <string name="header_create_profile">Create your profile</string>
     <string name="header_devices">My Devices</string>
     <string name="header_add_a_device">Add a Device</string>
+    <string name="header_device_image">Device Image</string>
+    <string name="header_device_receipt">Device Receipt</string>
 
 
     <!--  Text Prompts  -->
@@ -34,4 +36,5 @@
     <string name="description_clock">Time remaining</string>
     <string name="description_expand_arrow">Show/Hide more details</string>
     <string name="description_device_icon">Device Icon</string>
+    <string name="description_device_image">Device Image</string>
 </resources>
