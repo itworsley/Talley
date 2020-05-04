@@ -49,7 +49,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="@color/loginFormDetails" />
+            android:layout_marginStart="-20dp"
+            app:titleTextColor="@color/loginFormDetails">
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="100dp"
+                android:layout_height="36dp"
+
+                android:contentDescription="@string/logo_description"
+                android:scaleType="centerCrop"
+                android:tint="@android:color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/app_logo_foreground" />
+
+        </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

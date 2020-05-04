@@ -27,7 +27,8 @@ class CreateProfileActivity : AppCompatActivity() {
         profileViewModel.profile.observe(this, Observer { profile ->
             // If a profile exists, then skip the profile creation screen.
             if (profile?.uid != null) {
-                    startActivity(Intent(baseContext, MainActivity::class.java))
+                startActivity(Intent(baseContext, MainActivity::class.java))
+                finish()
             }
         })
     }
@@ -50,6 +51,7 @@ class CreateProfileActivity : AppCompatActivity() {
 
         profileViewModel.insert(Profile(null, name, email, contactNumber)).invokeOnCompletion {
             startActivity(Intent(baseContext, MainActivity::class.java))
+            finish()
         }
     }
 }

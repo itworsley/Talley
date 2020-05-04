@@ -10,13 +10,13 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/logo_description"
+        android:tint="@android:color/white"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground"
-        android:contentDescription="@string/logo_description" />
+        app:srcCompat="@drawable/create_profile_logo" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_left"
@@ -36,12 +36,12 @@
         android:id="@+id/text_layout_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginBottom="16dp"
         android:hint="@string/prompt_name"
         android:textColorHint="@color/loginFormDetails"
+        app:layout_constraintBottom_toTopOf="@+id/text_layout_email"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
+        app:layout_constraintStart_toStartOf="@+id/guideline_left">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/text_input_name"
@@ -55,12 +55,12 @@
         android:id="@+id/text_layout_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         android:hint="@string/prompt_email_address"
         android:textColorHint="@color/loginFormDetails"
+        app:layout_constraintBottom_toTopOf="@+id/text_layout_contact_number"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/text_layout_name">
+        app:layout_constraintStart_toStartOf="@+id/guideline_left">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/text_input_email"
@@ -74,12 +74,12 @@
         android:id="@+id/text_layout_contact_number"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         android:hint="@string/prompt_contact_number"
         android:textColorHint="@color/loginFormDetails"
+        app:layout_constraintBottom_toTopOf="@+id/button_save_and_continue"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/text_layout_email">
+        app:layout_constraintStart_toStartOf="@+id/guideline_left">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/text_input_contact_number"
@@ -94,19 +94,18 @@
         android:id="@+id/button_save_and_continue"
         android:layout_width="0dp"
         android:layout_height="50sp"
-        android:layout_marginTop="16dp"
-        android:shadowColor="@color/transparent"
+        android:layout_marginBottom="80dp"
         android:elevation="0dp"
-        android:background="@drawable/bg_login_button"
         android:onClick="saveProfile"
+        android:shadowColor="@color/transparent"
         android:text="@string/button_save"
         android:textAllCaps="false"
         android:textColor="@color/loginFormDetailsMedium"
         android:textSize="20sp"
         android:theme="@style/MtButtonStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_right"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/text_layout_contact_number" />
+        app:layout_constraintStart_toStartOf="@+id/guideline_left" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
