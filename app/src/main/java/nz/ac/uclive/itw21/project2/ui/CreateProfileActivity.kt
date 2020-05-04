@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputEditText
 import nz.ac.uclive.itw21.project2.MainActivity
 import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Profile
 import nz.ac.uclive.itw21.project2.database.ProfileViewModel
+import nz.ac.uclive.itw21.project2.helper.validateStrings
 
 class CreateProfileActivity : AppCompatActivity() {
 
@@ -33,9 +35,18 @@ class CreateProfileActivity : AppCompatActivity() {
 
     fun saveProfile(view: View) {
         Log.d("CLICK", "${view.id} button clicked")
-        val name = findViewById<TextInputEditText>(R.id.text_input_name).text.toString()
-        val email = findViewById<TextInputEditText>(R.id.text_input_email).text.toString()
-        val contactNumber = findViewById<TextInputEditText>(R.id.text_input_contact_number).text.toString()
+        val name = findViewById<TextInputEditText>(R.id.text_input_name).text?.toString().orEmpty()
+        val email = findViewById<TextInputEditText>(R.id.text_input_email).text?.toString().orEmpty()
+        val contactNumber = findViewById<TextInputEditText>(R.id.text_input_contact_number).text?.toString().orEmpty()
+
+        if (!validateStrings(mapOf("name" to name, "email" to email, "contact number" to contactNumber), this)) {
+            return
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Email is invalid", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         profileViewModel.insert(Profile(null, name, email, contactNumber)).invokeOnCompletion {
             startActivity(Intent(baseContext, MainActivity::class.java))

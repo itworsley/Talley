@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputEditText
 import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Device
 import nz.ac.uclive.itw21.project2.database.DeviceViewModel
+import nz.ac.uclive.itw21.project2.helper.validateStrings
 import java.io.File
 import java.io.IOException
 import java.text.NumberFormat
@@ -261,7 +262,7 @@ class CreateDeviceActivity : AppCompatActivity() {
         val receiptUri = findViewById<ImageView>(R.id.device_receipt).tag?.toString().orEmpty()
         val deviceImageUri = findViewById<ImageView>(R.id.device_image).tag?.toString().orEmpty()
 
-        if (!validateStrings(mapOf("name" to name, "type" to type, "vendor" to vendor, "price" to price, "warranty" to warrantyValue, "date of purchase" to dateOfPurchase))) {
+        if (!validateStrings(mapOf("name" to name, "type" to type, "vendor" to vendor, "price" to price, "warranty" to warrantyValue, "date of purchase" to dateOfPurchase), this)) {
             return
         }
         val priceAsDouble: Double
@@ -305,16 +306,5 @@ class CreateDeviceActivity : AppCompatActivity() {
         nf.maximumFractionDigits = 2
 
         return nf.format(price)
-    }
-
-
-    private fun validateStrings(values: Map<String, String>): Boolean {
-        for ((key, value) in values) {
-            if (value.isEmpty()) {
-                Toast.makeText(this, "Device $key is required", Toast.LENGTH_SHORT).show()
-                return false
-            }
-        }
-        return true
     }
 }
