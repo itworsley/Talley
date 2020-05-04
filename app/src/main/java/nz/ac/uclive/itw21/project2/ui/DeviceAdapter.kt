@@ -1,13 +1,10 @@
 package nz.ac.uclive.itw21.project2.ui
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.ImageView
-import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import nz.ac.uclive.itw21.project2.R
@@ -35,7 +32,7 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
         holder.deviceName.text = currentItem.deviceName
         holder.deviceWarrantyPeriod.text = calculateWarrantyPeriodRemaining(currentItem.warrantyPeriodDays, currentItem.dateOfPurchase)
         holder.deviceTypeText.text = currentItem.type
-        holder.devicePrice.text = currentItem.price.toString()
+        holder.devicePrice.text = currentItem.price
         handleDeviceIcon(holder, currentItem)
 
         // Used to handle viewing more details.
@@ -101,20 +98,8 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
         val view: View = itemView
         val deviceTypeIcon: ImageView = itemView.findViewById(R.id.device_icon)
         val deviceName: TextView = itemView.findViewById(R.id.device_name)
-        //        val devicePurchaseDate: TextView = itemView.findViewById(R.id.device_purchase_date)
         val deviceWarrantyPeriod: TextView = itemView.findViewById(R.id.device_warranty_period)
         val devicePrice: TextView = itemView.findViewById(R.id.device_price)
         val deviceTypeText: TextView = itemView.findViewById(R.id.device_type)
-    }
-
-
-    fun PopupWindow.dimBehind() {
-        val container = contentView.rootView
-        val context = contentView.context
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val p = container.layoutParams as WindowManager.LayoutParams
-        p.flags = p.flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
-        p.dimAmount = 0.3f
-        wm.updateViewLayout(container, p)
     }
 }

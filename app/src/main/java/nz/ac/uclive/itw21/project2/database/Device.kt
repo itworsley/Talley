@@ -3,7 +3,6 @@ package nz.ac.uclive.itw21.project2.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import org.jetbrains.annotations.NotNull
-import java.util.*
 
 @Entity(tableName = "devices")
 class Device (
