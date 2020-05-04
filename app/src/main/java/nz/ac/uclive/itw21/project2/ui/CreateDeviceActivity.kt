@@ -11,11 +11,11 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Device
@@ -45,7 +45,7 @@ class CreateDeviceActivity : AppCompatActivity() {
 
 
     private lateinit var imageUri: Uri
-    lateinit var currentPhotoPath: String
+    private lateinit var currentPhotoPath: String
 
     private val permissionCode = 1000
     private val imageRequestCode = 1001
@@ -146,9 +146,9 @@ class CreateDeviceActivity : AppCompatActivity() {
     private fun setUpDateClicker() {
         val dateField = findViewById<TextInputEditText>(R.id.text_input_date_of_purchase)
         dateSetListener = OnDateSetListener { _, year, month, day ->
-                var month = month
-                month += 1
-                val date = "$day/$month/$year"
+                var monthIncreased = month
+                monthIncreased += 1
+                val date = "$day/$monthIncreased/$year"
                 dateField.setText(date)
         }
 
@@ -251,6 +251,7 @@ class CreateDeviceActivity : AppCompatActivity() {
 
 
     fun saveDevice(view: View) {
+        Log.d("CLICK", "${view.id} button clicked")
         val name = deviceName.text?.toString().orEmpty()
         val type = deviceType
         val vendor = deviceVendor.text?.toString().orEmpty()
@@ -300,8 +301,8 @@ class CreateDeviceActivity : AppCompatActivity() {
 
     private fun formatPrice(price: Double): String {
         val nf: NumberFormat = NumberFormat.getNumberInstance(Locale.ENGLISH)
-        nf.minimumFractionDigits = 2;
-        nf.maximumFractionDigits = 2;
+        nf.minimumFractionDigits = 2
+        nf.maximumFractionDigits = 2
 
         return nf.format(price)
     }
