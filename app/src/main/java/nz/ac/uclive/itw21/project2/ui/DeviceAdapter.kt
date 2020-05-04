@@ -64,6 +64,7 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
         try {
             c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(dateOfPurchase)
         } catch (_: Exception) {
+            // Parse a default date so doesn't crash.
             c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse("01/01/2000")
         }
 

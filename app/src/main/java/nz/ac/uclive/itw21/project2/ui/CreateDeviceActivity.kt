@@ -9,10 +9,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.widget.doOnTextChanged
 import com.google.android.material.textfield.TextInputEditText
 import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Device
@@ -58,9 +61,6 @@ class CreateDeviceActivity : AppCompatActivity() {
 
         deviceViewModel = DeviceViewModel(application)
 
-        setUpTypeDropdown()
-        setUpWarrantyUnitDropdown()
-        setUpDateClicker()
 
 
         deviceName = findViewById(R.id.text_input_device_name)
@@ -77,6 +77,10 @@ class CreateDeviceActivity : AppCompatActivity() {
             imageView = it as ImageView
             handleAddPhotos()
         }
+
+        setUpTypeDropdown()
+        setUpWarrantyUnitDropdown()
+        setUpDateClicker()
     }
 
     private fun setUpTypeDropdown() {
@@ -117,6 +121,26 @@ class CreateDeviceActivity : AppCompatActivity() {
                 warrantyUnit = dropdownAdapter.getItem(position).toString()
             }
         }
+
+        deviceWarrantyValue.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(s: Editable) {
+                if (typeDropdown.selectedItem.toString() == "None") {
+                    typeDropdown.setSelection(3)
+                }
+
+                if (deviceWarrantyValue.text.isNullOrEmpty()) {
+                    typeDropdown.setSelection(0)
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+            }
+        })
     }
 
     private fun setUpDateClicker() {
@@ -213,7 +237,7 @@ class CreateDeviceActivity : AppCompatActivity() {
     @Throws(IOException::class)
     fun createImageFile(): File {
         // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(Date())
         val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
             "JPEG_${timeStamp}_",
