@@ -2,7 +2,6 @@ package nz.ac.uclive.itw21.project2.helper
 
 import android.content.Context
 import android.widget.Toast
-import java.util.*
 
 
 fun validateStrings(values: Map<String, String>, context: Context): Boolean {
