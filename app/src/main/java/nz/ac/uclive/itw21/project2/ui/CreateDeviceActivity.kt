@@ -19,6 +19,7 @@ import nz.ac.uclive.itw21.project2.database.Device
 import nz.ac.uclive.itw21.project2.database.DeviceViewModel
 import java.io.File
 import java.io.IOException
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,10 +29,18 @@ class CreateDeviceActivity : AppCompatActivity() {
     private lateinit var dateSetListener: OnDateSetListener
     private lateinit var deviceViewModel: DeviceViewModel
 
+    private lateinit var deviceName: TextInputEditText
     private lateinit var deviceType: String
+    private lateinit var deviceVendor: TextInputEditText
+    private lateinit var devicePrice: TextInputEditText
+    private lateinit var deviceWarrantyValue: TextInputEditText
+    private lateinit var deviceDateOfPurchase: TextInputEditText
+
     private lateinit var warrantyUnit: String
     private lateinit var imageView: ImageView
-    private lateinit var deviceImageView: ImageView
+
+
+
     private lateinit var imageUri: Uri
     lateinit var currentPhotoPath: String
 
@@ -53,12 +62,18 @@ class CreateDeviceActivity : AppCompatActivity() {
         setUpWarrantyUnitDropdown()
         setUpDateClicker()
 
-        deviceImageView = findViewById<ImageView>(R.id.device_image)
-        deviceImageView.setOnClickListener {
+
+        deviceName = findViewById(R.id.text_input_device_name)
+        deviceVendor = findViewById(R.id.text_input_vendor)
+        devicePrice = findViewById(R.id.text_input_price)
+        deviceWarrantyValue = findViewById(R.id.text_input_warranty_period)
+        deviceDateOfPurchase = findViewById(R.id.text_input_date_of_purchase)
+
+        findViewById<ImageView>(R.id.device_image).setOnClickListener {
             imageView = it as ImageView
             handleAddPhotos()
         }
-        val receiptImageView = findViewById<ImageView>(R.id.device_receipt).setOnClickListener {
+        findViewById<ImageView>(R.id.device_receipt).setOnClickListener {
             imageView = it as ImageView
             handleAddPhotos()
         }
@@ -210,24 +225,44 @@ class CreateDeviceActivity : AppCompatActivity() {
         }
     }
 
+
     fun saveDevice(view: View) {
-        val name = findViewById<TextInputEditText>(R.id.text_input_device_name).text.toString()
+        val name = deviceName.text?.toString().orEmpty()
         val type = deviceType
-        val vendor = findViewById<TextInputEditText>(R.id.text_input_vendor).text.toString()
-        val price = findViewById<TextInputEditText>(R.id.text_input_price).text.toString().toDouble()
-        var warrantyValue = findViewById<TextInputEditText>(R.id.text_input_warranty_period).text.toString().toLong()
-        val dateOfPurchase = findViewById<TextInputEditText>(R.id.text_input_date_of_purchase).text.toString()
-        val receiptUri = findViewById<ImageView>(R.id.device_receipt).tag.toString()
-        val deviceImageUri = findViewById<ImageView>(R.id.device_image).tag.toString()
+        val vendor = deviceVendor.text?.toString().orEmpty()
+        val price = devicePrice.text?.toString().orEmpty()
+        val warrantyValue = deviceWarrantyValue.text?.toString().orEmpty()
+        val dateOfPurchase = deviceDateOfPurchase.text?.toString().orEmpty()
+        val receiptUri = findViewById<ImageView>(R.id.device_receipt).tag?.toString().orEmpty()
+        val deviceImageUri = findViewById<ImageView>(R.id.device_image).tag?.toString().orEmpty()
 
-
-        when(warrantyUnit) {
-            "None" -> warrantyValue = 0L
-            "Months" -> warrantyValue = (warrantyValue * 31)
-            "Years" -> warrantyValue = (warrantyValue * 365)
+        if (!validateStrings(mapOf("name" to name, "type" to type, "vendor" to vendor, "price" to price, "warranty" to warrantyValue, "date of purchase" to dateOfPurchase))) {
+            return
+        }
+        val priceAsDouble: Double
+        try {
+            priceAsDouble = price.toDouble()
+            
+        } catch (_: Exception) {
+            Toast.makeText(this, "Price is invalid", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        val device = Device(null, name, type, dateOfPurchase, price, vendor, warrantyValue.toInt(), receiptUri, deviceImageUri)
+        var warrantyAsLong: Long
+        try {
+            warrantyAsLong = warrantyValue.toLong()
+        } catch (_: Exception) {
+            Toast.makeText(this, "Warranty is invalid", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        when(warrantyUnit) {
+            "None" -> warrantyAsLong = 0L
+            "Months" -> warrantyAsLong = (warrantyAsLong * 31)
+            "Years" -> warrantyAsLong = (warrantyAsLong * 365)
+        }
+
+        val device = Device(null, name, type, dateOfPurchase, formatPrice(priceAsDouble), vendor, warrantyAsLong.toInt(), receiptUri, deviceImageUri)
 
         deviceViewModel.insert(device).invokeOnCompletion {
             finish()
@@ -236,6 +271,25 @@ class CreateDeviceActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
+        return true
+    }
+
+    private fun formatPrice(price: Double): String {
+        val nf: NumberFormat = NumberFormat.getNumberInstance(Locale.ENGLISH)
+        nf.minimumFractionDigits = 2;
+        nf.maximumFractionDigits = 2;
+
+        return nf.format(price)
+    }
+
+
+    private fun validateStrings(values: Map<String, String>): Boolean {
+        for ((key, value) in values) {
+            if (value.isEmpty()) {
+                Toast.makeText(this, "Device $key is required", Toast.LENGTH_SHORT).show()
+                return false
+            }
+        }
         return true
     }
 }
