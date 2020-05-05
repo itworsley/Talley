@@ -1,0 +1,7 @@
+<resources>
+    <!-- Notification Frequency Options Preferences -->
+    <string-array name="notifications_frequency_options">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+</resources>

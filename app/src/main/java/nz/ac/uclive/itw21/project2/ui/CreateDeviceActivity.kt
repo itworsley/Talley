@@ -282,17 +282,34 @@ class CreateDeviceActivity : AppCompatActivity() {
             return
         }
 
-        when(warrantyUnit) {
-            "None" -> warrantyAsLong = 0L
-            "Months" -> warrantyAsLong = (warrantyAsLong * 31)
-            "Years" -> warrantyAsLong = (warrantyAsLong * 365)
-        }
+        val warrantyEndDate = calculateWarrantyEndDate(warrantyAsLong, warrantyUnit, dateOfPurchase)
 
-        val device = Device(null, name, type, dateOfPurchase, formatPrice(priceAsDouble), vendor, warrantyAsLong.toInt(), receiptUri, deviceImageUri)
+        val device = Device(null, name, type, dateOfPurchase, formatPrice(priceAsDouble), vendor, warrantyEndDate, receiptUri, deviceImageUri)
 
         deviceViewModel.insert(device).invokeOnCompletion {
             finish()
         }
+    }
+
+    private fun calculateWarrantyEndDate(warrantyValue: Long, warrantyUnit: String, dateOfPurchase: String): String {
+        var warrantyDays = 0L
+        when(warrantyUnit) {
+            "None" -> warrantyDays = 0L
+            "Months" -> warrantyDays = (warrantyValue * 31)
+            "Years" -> warrantyDays = (warrantyValue * 365)
+        }
+
+        val c = Calendar.getInstance()
+        try {
+            c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(dateOfPurchase)
+        } catch (_: Exception) {
+            // Parse a default date so doesn't crash.
+            c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse("01/01/2000")
+        }
+
+        c.add(Calendar.DAY_OF_MONTH, warrantyDays.toInt())
+
+        return SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(c.time)
     }
 
     override fun onSupportNavigateUp(): Boolean {

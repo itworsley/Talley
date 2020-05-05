@@ -25,7 +25,7 @@ class Device (
     @ColumnInfo(name = "vendor") val vendor: String,
 
     @NotNull
-    @ColumnInfo(name = "warranty_period_days") val warrantyPeriodDays: Int,
+    @ColumnInfo(name = "warranty_end_date") val warrantyEndDate: String,
 
 
     @ColumnInfo(name = "receipt_image_uri") val receiptImageUri: String,

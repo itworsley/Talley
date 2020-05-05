@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import nz.ac.uclive.itw21.project2.ui.CreateDeviceActivity
 import nz.ac.uclive.itw21.project2.ui.DeviceFragment
+import nz.ac.uclive.itw21.project2.ui.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,5 +35,10 @@ class MainActivity : AppCompatActivity() {
     fun showCreateDeviceActivity(view: View) {
         Log.d("CLICK", "${view.id} button clicked")
         startActivity(Intent(baseContext, CreateDeviceActivity::class.java))
+    }
+
+    fun showSettingsActivity(view: View) {
+        Log.d("CLICK", "${view.id} button clicked")
+        startActivity(Intent(baseContext, SettingsActivity::class.java))
     }
 }

@@ -42,7 +42,7 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
     override fun onBindViewHolder(holder: DeviceViewHolder, position: Int) {
         val currentItem = deviceList[position]
         holder.deviceName.text = currentItem.deviceName
-        holder.deviceWarrantyPeriod.text = calculateWarrantyPeriodRemaining(currentItem.warrantyPeriodDays, currentItem.dateOfPurchase)
+        holder.deviceWarrantyPeriod.text = calculateWarrantyPeriodRemaining(currentItem.warrantyEndDate, currentItem.dateOfPurchase)
         holder.deviceTypeText.text = currentItem.type
         holder.devicePrice.text = currentItem.price
         holder.devicePurchaseDate.text = itemView.context.getString(R.string.format_purchase_date, currentItem.dateOfPurchase)
@@ -115,16 +115,15 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
     }
 
 
-    private fun calculateWarrantyPeriodRemaining(warrantyPeriodDays: Int, dateOfPurchase: String): String {
+    private fun calculateWarrantyPeriodRemaining(warrantyEndDate: String, dateOfPurchase: String): String {
         val c = Calendar.getInstance()
         try {
-            c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(dateOfPurchase)
+            c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(warrantyEndDate)
         } catch (_: Exception) {
             // Parse a default date so doesn't crash.
             c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse("01/01/2000")
         }
 
-        c.add(Calendar.DAY_OF_MONTH, warrantyPeriodDays)
         val days = TimeUnit.DAYS.convert(c.time.time - Date().time, TimeUnit.MILLISECONDS)
 
         if (days > 365) {

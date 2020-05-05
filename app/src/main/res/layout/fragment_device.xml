@@ -263,7 +263,8 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
             app:layout_constraintTop_toBottomOf="@+id/device_price"
-            app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
+            app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp"
+            android:contentDescription="@string/description_device_expand_collapse" />
 
         <ImageView
             android:id="@+id/delete_device"
@@ -274,7 +275,8 @@
             app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintStart_toStartOf="@+id/guideline6"
-            app:srcCompat="@drawable/ic_delete_black_24dp" />
+            app:srcCompat="@drawable/ic_delete_black_24dp"
+            android:contentDescription="@string/description_device_delete"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
