@@ -1,15 +1,19 @@
 package nz.ac.uclive.itw21.project2.ui
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Device
-import java.lang.Exception
+import nz.ac.uclive.itw21.project2.helper.FullscreenImageActivity
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -20,6 +24,7 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var deviceList = emptyList<Device>()
     private lateinit var itemView: View
+    private var isImageFitToScreen = false
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeviceViewHolder {
@@ -33,10 +38,43 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
         holder.deviceWarrantyPeriod.text = calculateWarrantyPeriodRemaining(currentItem.warrantyPeriodDays, currentItem.dateOfPurchase)
         holder.deviceTypeText.text = currentItem.type
         holder.devicePrice.text = currentItem.price
+        holder.devicePurchaseDate.text = itemView.context.getString(R.string.format_purchase_date, currentItem.dateOfPurchase)
+        holder.deviceVendor.text = currentItem.vendor
+
+        if (currentItem.deviceImageUri.isNotEmpty()) {
+            holder.deviceImage.foreground = null
+
+            holder.deviceImage.setImageURI(Uri.parse(currentItem.deviceImageUri))
+
+            holder.deviceImage.setOnClickListener{
+                val fullScreenIntent = Intent(holder.view.context, FullscreenImageActivity::class.java)
+                fullScreenIntent.putExtra("URI", currentItem.deviceImageUri)
+                holder.view.context.startActivity(fullScreenIntent)
+            }
+        }
+
+        if (currentItem.receiptImageUri.isNotEmpty()) {
+            holder.deviceReceipt.foreground = null
+            holder.deviceReceipt.setImageURI(Uri.parse(currentItem.receiptImageUri))
+
+            holder.deviceReceipt.setOnClickListener{
+                val fullScreenIntent = Intent(holder.view.context, FullscreenImageActivity::class.java)
+                fullScreenIntent.putExtra("URI", currentItem.receiptImageUri)
+                holder.view.context.startActivity(fullScreenIntent)
+            }
+        }
+
         handleDeviceIcon(holder, currentItem)
 
         // Used to handle viewing more details.
         holder.view.setOnClickListener {
+            if (holder.moreDetails.visibility == View.GONE) {
+                holder.moreDetails.visibility = View.VISIBLE
+                holder.expandArrow.setImageResource(R.drawable.ic_keyboard_arrow_up_black_24dp)
+            } else {
+                holder.moreDetails.visibility = View.GONE
+                holder.expandArrow.setImageResource(R.drawable.ic_keyboard_arrow_down_black_24dp)
+            }
         }
     }
 
@@ -101,5 +139,11 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
         val deviceWarrantyPeriod: TextView = itemView.findViewById(R.id.device_warranty_period)
         val devicePrice: TextView = itemView.findViewById(R.id.device_price)
         val deviceTypeText: TextView = itemView.findViewById(R.id.device_type)
+        val devicePurchaseDate: TextView = itemView.findViewById(R.id.device_date_of_purchase)
+        val deviceVendor: TextView = itemView.findViewById(R.id.device_vendor)
+        val deviceImage: ImageView = itemView.findViewById(R.id.device_image)
+        val deviceReceipt: ImageView = itemView.findViewById(R.id.device_receipt)
+        val moreDetails: ConstraintLayout = itemView.findViewById(R.id.detailed_view)
+        val expandArrow: ImageView = itemView.findViewById(R.id.expand_card)
     }
 }

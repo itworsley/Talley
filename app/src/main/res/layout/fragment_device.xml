@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="wrap_content"
     android:layout_margin="4dp"
+    android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="horizontal"
     android:foreground="?android:attr/selectableItemBackground"
-    android:background="?android:attr/selectableItemBackground">
+    android:orientation="horizontal">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/default_view"
         android:layout_width="match_parent"
@@ -27,16 +29,14 @@
         <ImageView
             android:id="@+id/device_icon"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="60dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:contentDescription="@string/description_device_icon"
             android:tint="@color/colorAccent"
-            app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintEnd_toEndOf="@+id/vertical_line"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline3"
-            app:srcCompat="@drawable/device_other"
-            android:contentDescription="@string/description_device_icon" />
+            app:srcCompat="@drawable/device_other" />
 
 
         <View
@@ -50,10 +50,10 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraintLayout"
+            android:id="@+id/basic_view"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline6"
             app:layout_constraintStart_toEndOf="@+id/device_icon_background"
             app:layout_constraintTop_toTopOf="parent">
@@ -92,6 +92,85 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/device_name" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/detailed_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/device_type">
+
+                <TextView
+                    android:id="@+id/device_vendor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="start"
+                    android:singleLine="true"
+                    android:text="@string/prompt_device_vendor"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textColor="@color/mediumGrey"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/device_date_of_purchase"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="start"
+                    android:singleLine="true"
+                    android:text="@string/prompt_purchase_date"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textColor="@color/mediumGrey"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/device_vendor" />
+
+                <ImageView
+                    android:id="@+id/device_image"
+                    android:layout_width="80sp"
+                    android:layout_height="80sp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/bg_image_border"
+                    android:clickable="true"
+                    android:contentDescription="@string/description_device_image"
+                    android:focusable="true"
+
+                    android:foreground="@drawable/bg_image_placeholder"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/device_receipt"
+                    app:layout_constraintTop_toBottomOf="@+id/device_date_of_purchase" />
+
+                <ImageView
+                    android:id="@+id/device_receipt"
+                    android:layout_width="80sp"
+                    android:layout_height="80sp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/bg_image_border"
+                    android:clickable="true"
+                    android:contentDescription="@string/description_device_image"
+                    android:focusable="true"
+                    android:foreground="@drawable/bg_image_placeholder"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/device_date_of_purchase" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
@@ -100,8 +179,8 @@
             android:layout_height="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="4dp"
-            android:tint="@color/mediumGrey"
             android:contentDescription="@string/description_clock"
+            android:tint="@color/mediumGrey"
             app:layout_constraintEnd_toStartOf="@+id/device_warranty_period"
             app:layout_constraintTop_toTopOf="@+id/guideline3"
             app:srcCompat="@drawable/ic_access_time_black_24dp" />
@@ -121,7 +200,7 @@
             android:id="@+id/dollar_image"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="4dp"
             android:contentDescription="@string/description_price"
             android:tint="@color/mediumGrey"
@@ -133,7 +212,7 @@
             android:id="@+id/device_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:text="@string/prompt_device_price"
             android:textColor="@color/mediumGrey"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
@@ -175,6 +254,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_end="76dp" />
+
+        <ImageView
+            android:id="@+id/expand_card"
+            android:layout_width="42dp"
+            android:layout_height="39dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline6"
+            app:layout_constraintTop_toBottomOf="@+id/device_price"
+            app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

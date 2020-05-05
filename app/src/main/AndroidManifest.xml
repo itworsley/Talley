@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="nz.ac.uclive.itw21.project2">
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
 
     <application
         android:icon="@mipmap/app_logo"
@@ -11,14 +11,17 @@
         android:roundIcon="@mipmap/app_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".helper.FullscreenImageActivity"></activity>
         <activity android:name=".ui.CreateDeviceActivity" />
         <activity android:name=".ui.CreateProfileActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="nz.ac.uclive.itw21.project2"

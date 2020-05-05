@@ -25,8 +25,8 @@
     <string name="prompt_device_date_of_purchase">Date of Purchase</string>
 
     <!--  Format Strings  -->
-    <string name="format_purchase_date">Purchase Date: %s</string>
-    <string name="format_warranty_period">Warranty Period: %s</string>
+    <string name="format_purchase_date">Purchased: %1$s</string>
+    <string name="format_warranty_period">Warranty Period: %1$s</string>
 
     <!--  Button Text  -->
     <string name="button_save">Save</string>
