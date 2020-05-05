@@ -44,4 +44,7 @@ interface DeviceDao {
 
     @Query("DELETE FROM devices")
     suspend fun deleteAll()
+
+    @Delete
+    suspend fun deleteDevice(device: Device)
 }

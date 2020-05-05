@@ -19,4 +19,9 @@ class DeviceViewModel(application: Application): AndroidViewModel(application) {
     fun insert(device: Device) = viewModelScope.launch {
         repository.insert(device)
     }
+
+
+    fun deleteDevice(device: Device) = viewModelScope.launch {
+        repository.deleteDevice(device)
+    }
 }

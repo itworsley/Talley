@@ -32,7 +32,7 @@ abstract class TalleyDatabase : RoomDatabase() {
             // Delete all content here.
 //            profileDao.deleteAll()
 //            deviceDao.insert(Device(null, "hello", "1", "20/04/2020", 23, "HI", 2))
-//            deviceDao.insert(Device(null, "Device", "1", "20/05/2018", 23, "HI", 100))
+//            deviceDao.insert(Device(null, "Device", "1", "20/05/2018", "23.90", "HI", 100, "", ""))
 //            deviceDao.deleteAll()
         }
     }

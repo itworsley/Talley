@@ -8,4 +8,8 @@ class DeviceRepository(private val deviceDao: DeviceDao) {
     suspend fun insert(device: Device) {
         deviceDao.insert(device)
     }
+
+    suspend fun deleteDevice(device: Device) {
+        deviceDao.deleteDevice(device)
+    }
 }

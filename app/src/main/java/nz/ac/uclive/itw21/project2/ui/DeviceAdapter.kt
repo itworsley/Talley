@@ -1,18 +1,24 @@
 package nz.ac.uclive.itw21.project2.ui
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
-import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Device
+import nz.ac.uclive.itw21.project2.database.DeviceViewModel
 import nz.ac.uclive.itw21.project2.helper.FullscreenImageActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,11 +30,12 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var deviceList = emptyList<Device>()
     private lateinit var itemView: View
-    private var isImageFitToScreen = false
+    private lateinit var deviceViewModel: DeviceViewModel
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeviceViewHolder {
         itemView = inflater.inflate(R.layout.fragment_device, parent, false)
+        deviceViewModel = ViewModelProvider((itemView.context as FragmentActivity)).get(DeviceViewModel::class.java)
         return DeviceViewHolder(itemView)
     }
 
@@ -70,11 +77,25 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
         holder.view.setOnClickListener {
             if (holder.moreDetails.visibility == View.GONE) {
                 holder.moreDetails.visibility = View.VISIBLE
+                holder.deleteDevice.visibility = View.VISIBLE
                 holder.expandArrow.setImageResource(R.drawable.ic_keyboard_arrow_up_black_24dp)
             } else {
                 holder.moreDetails.visibility = View.GONE
+                holder.deleteDevice.visibility = View.GONE
                 holder.expandArrow.setImageResource(R.drawable.ic_keyboard_arrow_down_black_24dp)
             }
+        }
+
+        holder.deleteDevice.setOnClickListener {
+            MaterialAlertDialogBuilder(itemView.context, R.style.ThemeOverlay_AppCompat_Dialog_Alert)
+                .setTitle(itemView.context.resources.getString(R.string.header_delete))
+                .setMessage(itemView.context.resources.getString(R.string.prompt_delete_device))
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes) { _, _ ->
+                    deviceViewModel.deleteDevice(currentItem)
+                }
+                .setNegativeButton(android.R.string.no, null).show()
+
         }
     }
 
@@ -145,5 +166,6 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
         val deviceReceipt: ImageView = itemView.findViewById(R.id.device_receipt)
         val moreDetails: ConstraintLayout = itemView.findViewById(R.id.detailed_view)
         val expandArrow: ImageView = itemView.findViewById(R.id.expand_card)
+        val deleteDevice: ImageView = itemView.findViewById(R.id.delete_device)
     }
 }

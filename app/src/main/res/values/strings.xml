@@ -8,6 +8,7 @@
     <string name="header_add_a_device">Add a Device</string>
     <string name="header_device_image">Device Image</string>
     <string name="header_device_receipt">Device Receipt</string>
+    <string name="header_delete">Confirm Delete</string>
 
 
     <!--  Text Prompts  -->
@@ -16,6 +17,7 @@
     <string name="prompt_contact_number">Contact Number</string>
     <string name="prompt_purchase_date">Purchase Date</string>
     <string name="prompt_warranty_period">Warranty Period</string>
+    <string name="prompt_delete_device">Are you sure you want to delete?</string>
 
     <string name="prompt_device_name">Device Name</string>
     <string name="prompt_device_type">Device Type</string>
