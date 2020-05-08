@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Talley</string>
+    <string name="logo_description">Logo de Talley</string>
+    <string name="header_create_profile">Crea Tu Perfil</string>
+    <string name="header_devices">Mis Dispositivos</string>
+    <string name="header_add_a_device">Agregue un Dispositivo</string>
+    <string name="header_device_image">Imagen del Dispositivo</string>
+    <string name="header_delete">Confirmar Eliminación</string>
+    <string name="header_device_receipt">Recibo de Dispositivo</string>
+    <string name="header_settings">Configuraciones</string>
+    <string name="header_notifications">Notificaciones</string>
+    <string name="header_enable_notifications">Permitir Notificaciones</string>
+    <string name="header_notification_frequency">Frecuencia de Notificación</string>
+    <string name="header_notification_one_year">1 Año</string>
+    <string name="header_notification_six_months">6 Meses</string>
+    <string name="header_notification_one_month">"1 Meses "</string>
+    <string name="header_notification_one_week">1 Semanas</string>
+    <string name="header_notification_one_the_day">Al día</string>
+    <string name="prompt_name">Nombre</string>
+    <string name="prompt_email_address">Dirección de Correo Electrónico</string>
+    <string name="prompt_contact_number">Número de Contacto</string>
+    <string name="prompt_purchase_date">Fecha de Compra</string>
+    <string name="prompt_warranty_period">Período de Garantía</string>
+    <string name="prompt_delete_device">¿Estás seguro de que quieres eliminar?</string>
+    <string name="prompt_device_name">Nombre del Dispositivo</string>
+    <string name="prompt_device_type">Tipo del Dispositivo</string>
+    <string name="prompt_device_vendor">Vendedor</string>
+    <string name="prompt_device_price">Precio</string>
+    <string name="prompt_device_warranty_period">Período de Garantía</string>
+    <string name="prompt_device_date_of_purchase">Fecha de Compra</string>
+    <string name="format_purchase_date">Comprado: %1$s</string>
+    <string name="format_warranty_period">Período de Garantía: %1$s</string>
+    <string name="button_save">Salvar</string>
+    <string name="description_clock">Tiempo restante</string>
+    <string name="description_price">Precio</string>
+    <string name="description_expand_arrow">Mostrar/Ocultar más detalles</string>
+    <string name="description_device_icon">Icono del Dispositivo</string>
+    <string name="description_device_image">Imagen del Dispositivo</string>
+    <string name="description_device_expand_collapse">Expandir/Contraer Detalles del Dispositivo</string>
+    <string name="description_device_delete">Eliminar Dispositivo</string>
+    <string name="description_settings">Configuraciones</string>
+    <string name="description_notification_frequency">Establecer la frecuencia de notificación</string>
+</resources>
