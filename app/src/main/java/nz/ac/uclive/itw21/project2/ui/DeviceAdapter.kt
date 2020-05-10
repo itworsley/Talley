@@ -1,16 +1,14 @@
 package nz.ac.uclive.itw21.project2.ui
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
@@ -20,9 +18,9 @@ import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Device
 import nz.ac.uclive.itw21.project2.database.DeviceViewModel
 import nz.ac.uclive.itw21.project2.helper.FullscreenImageActivity
-import java.text.SimpleDateFormat
+import java.time.Period
+import java.time.ZoneId
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder>() {
@@ -42,7 +40,7 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
     override fun onBindViewHolder(holder: DeviceViewHolder, position: Int) {
         val currentItem = deviceList[position]
         holder.deviceName.text = currentItem.deviceName
-        holder.deviceWarrantyPeriod.text = calculateWarrantyPeriodRemaining(currentItem.warrantyEndDate, currentItem.dateOfPurchase)
+        holder.deviceWarrantyPeriod.text = calculateWarrantyPeriodRemaining(currentItem.warrantyEndDate)
         holder.deviceTypeText.text = currentItem.type
         holder.devicePrice.text = currentItem.price
         holder.devicePurchaseDate.text = itemView.context.getString(R.string.format_purchase_date, currentItem.dateOfPurchase)
@@ -115,28 +113,24 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
     }
 
 
-    private fun calculateWarrantyPeriodRemaining(warrantyEndDate: String, dateOfPurchase: String): String {
-        val c = Calendar.getInstance()
-        try {
-            c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(warrantyEndDate)
-        } catch (_: Exception) {
-            // Parse a default date so doesn't crash.
-            c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse("01/01/2000")
-        }
+    private fun calculateWarrantyPeriodRemaining(warrantyEndDate: Date): String {
+        val period = Period.between(
+            Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+            warrantyEndDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+        )
 
-        val days = TimeUnit.DAYS.convert(c.time.time - Date().time, TimeUnit.MILLISECONDS)
 
-        if (days > 365) {
-            return "${(days / 365)} y."
+        if (period.years > 0) {
+            return "${period.years} y."
         }
-        if (days < 0) {
+        if (period.days < 0) {
             return "Past"
         }
-        if (days == 0L) {
+        if (period.days == 0) {
             return "Today!"
         }
 
-        return "$days d."
+        return "${period.days} d."
     }
 
     internal fun setDeviceList(deviceList: List<Device>) {

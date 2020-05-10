@@ -16,10 +16,12 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.preference.PreferenceManager
 import com.google.android.material.textfield.TextInputEditText
 import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Device
 import nz.ac.uclive.itw21.project2.database.DeviceViewModel
+import nz.ac.uclive.itw21.project2.helper.ManageNotifications
 import nz.ac.uclive.itw21.project2.helper.validateStrings
 import java.io.File
 import java.io.IOException
@@ -283,33 +285,42 @@ class CreateDeviceActivity : AppCompatActivity() {
         }
 
         val warrantyEndDate = calculateWarrantyEndDate(warrantyAsLong, warrantyUnit, dateOfPurchase)
+        val nextReminderDate = ManageNotifications.instance.calculateNextReminderDate(warrantyEndDate, this)
 
-        val device = Device(null, name, type, dateOfPurchase, formatPrice(priceAsDouble), vendor, warrantyEndDate, receiptUri, deviceImageUri)
+        val device = Device(
+            null,
+            name,
+            type,
+            SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(dateOfPurchase),
+            formatPrice(priceAsDouble),
+            vendor,
+            warrantyEndDate,
+            receiptUri,
+            deviceImageUri,
+            nextReminderDate,
+            false
+        )
 
         deviceViewModel.insert(device).invokeOnCompletion {
             finish()
         }
     }
 
-    private fun calculateWarrantyEndDate(warrantyValue: Long, warrantyUnit: String, dateOfPurchase: String): String {
+    private fun calculateWarrantyEndDate(warrantyValue: Long, warrantyUnit: String, dateOfPurchase: String): Date {
         var warrantyDays = 0L
         when(warrantyUnit) {
             "None" -> warrantyDays = 0L
             "Months" -> warrantyDays = (warrantyValue * 31)
             "Years" -> warrantyDays = (warrantyValue * 365)
+            "Days" -> warrantyDays = warrantyValue
         }
 
         val c = Calendar.getInstance()
-        try {
-            c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(dateOfPurchase)
-        } catch (_: Exception) {
-            // Parse a default date so doesn't crash.
-            c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse("01/01/2000")
-        }
+        c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(dateOfPurchase)
 
         c.add(Calendar.DAY_OF_MONTH, warrantyDays.toInt())
 
-        return SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(c.time)
+        return c.time
     }
 
     override fun onSupportNavigateUp(): Boolean {

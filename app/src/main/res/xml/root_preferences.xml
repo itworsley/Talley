@@ -28,6 +28,7 @@
         <SwitchPreferenceCompat
             app:key="notification_frequency_on_the_day"
             app:dependency="enable_notifications"
+            app:defaultValue="true"
             app:title="@string/header_notification_one_the_day" />
 
     </PreferenceCategory>
