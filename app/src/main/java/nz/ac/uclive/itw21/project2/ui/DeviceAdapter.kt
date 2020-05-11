@@ -1,24 +1,27 @@
 package nz.ac.uclive.itw21.project2.ui
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
+import nz.ac.uclive.itw21.project2.MainActivity
 import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Device
 import nz.ac.uclive.itw21.project2.database.DeviceViewModel
+import nz.ac.uclive.itw21.project2.helper.ExportImportData
 import nz.ac.uclive.itw21.project2.helper.FullscreenImageActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,6 +30,7 @@ import java.util.concurrent.TimeUnit
 
 class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapter<DeviceAdapter.DeviceViewHolder>() {
 
+    private val createFileCode = 1
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var deviceList = emptyList<Device>()
     private lateinit var itemView: View
@@ -47,6 +51,7 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
         holder.devicePrice.text = currentItem.price
         holder.devicePurchaseDate.text = itemView.context.getString(R.string.format_purchase_date, currentItem.dateOfPurchase)
         holder.deviceVendor.text = currentItem.vendor
+        holder.shareDevice.setOnClickListener { shareDevice(currentItem) }
 
         if (currentItem.deviceImageUri.isNotEmpty()) {
             holder.deviceImage.foreground = null
@@ -78,10 +83,12 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
             if (holder.moreDetails.visibility == View.GONE) {
                 holder.moreDetails.visibility = View.VISIBLE
                 holder.deleteDevice.visibility = View.VISIBLE
+                holder.shareDevice.visibility = View.VISIBLE
                 holder.expandArrow.setImageResource(R.drawable.ic_keyboard_arrow_up_black_24dp)
             } else {
                 holder.moreDetails.visibility = View.GONE
                 holder.deleteDevice.visibility = View.GONE
+                holder.shareDevice.visibility = View.GONE
                 holder.expandArrow.setImageResource(R.drawable.ic_keyboard_arrow_down_black_24dp)
             }
         }
@@ -139,6 +146,10 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
         return "$days d."
     }
 
+    private fun shareDevice(device: Device) {
+        ExportImportData().exportDeviceFile(itemView.context, device)
+    }
+
     internal fun setDeviceList(deviceList: List<Device>) {
         this.deviceList = deviceList
         notifyDataSetChanged()
@@ -166,5 +177,6 @@ class DeviceAdapter internal constructor(context: Context) : RecyclerView.Adapte
         val moreDetails: ConstraintLayout = itemView.findViewById(R.id.detailed_view)
         val expandArrow: ImageView = itemView.findViewById(R.id.expand_card)
         val deleteDevice: ImageView = itemView.findViewById(R.id.delete_device)
+        val shareDevice: ImageButton = itemView.findViewById(R.id.share_device)
     }
 }

@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull
 @Entity(tableName = "devices")
 class Device (
     @PrimaryKey(autoGenerate = true)
-    val uid: Int?,
+    var uid: Int?,
 
     @NotNull
     @ColumnInfo(name = "device_name") val deviceName: String,

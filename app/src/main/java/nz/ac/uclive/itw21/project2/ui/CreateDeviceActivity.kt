@@ -15,11 +15,13 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.google.android.material.textfield.TextInputEditText
 import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Device
 import nz.ac.uclive.itw21.project2.database.DeviceViewModel
+import nz.ac.uclive.itw21.project2.helper.ExportImportData
 import nz.ac.uclive.itw21.project2.helper.validateStrings
 import java.io.File
 import java.io.IOException
@@ -32,6 +34,8 @@ class CreateDeviceActivity : AppCompatActivity() {
 
     private lateinit var dateSetListener: OnDateSetListener
     private lateinit var deviceViewModel: DeviceViewModel
+    private lateinit var typeDropdownAdapter: ArrayAdapter<String>
+    private lateinit var typeDropdown: Spinner
 
     private lateinit var deviceName: TextInputEditText
     private lateinit var deviceType: String
@@ -50,6 +54,7 @@ class CreateDeviceActivity : AppCompatActivity() {
 
     private val permissionCode = 1000
     private val imageRequestCode = 1001
+    private val uploadFileRequestCode = 1002
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,21 +90,21 @@ class CreateDeviceActivity : AppCompatActivity() {
     }
 
     private fun setUpTypeDropdown() {
-        val dropdownAdapter = ArrayAdapter(
+        typeDropdownAdapter = ArrayAdapter(
             baseContext,
             android.R.layout.simple_spinner_item,
             listOf("Other", "Headphones", "Kitchenware", "Laptop", "Mouse", "PC", "Phone", "Tablet", "TV", "Watch")
         )
 
-        dropdownAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        val typeDropdown = findViewById<Spinner>(R.id.device_type_dropdown)
-        typeDropdown.adapter = dropdownAdapter
+        typeDropdownAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        typeDropdown = findViewById(R.id.device_type_dropdown)
+        typeDropdown.adapter = typeDropdownAdapter
 
         typeDropdown.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
 
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                deviceType = dropdownAdapter.getItem(position).toString()
+                deviceType = typeDropdownAdapter.getItem(position).toString()
             }
         }
     }
@@ -233,6 +238,18 @@ class CreateDeviceActivity : AppCompatActivity() {
             imageView.setImageURI(imageUri)
             imageView.tag = imageUri.toString()
         }
+
+        if (requestCode == uploadFileRequestCode && resultCode == Activity.RESULT_OK) {
+            data?.data?.also { uri ->
+                val device = ExportImportData().importDeviceFile(baseContext, uri)
+                if (device != null) {
+                    deviceViewModel.insert(device).invokeOnCompletion {
+                        finish()
+                    }
+                }
+
+            }
+        }
     }
 
     @Throws(IOException::class)
@@ -248,6 +265,18 @@ class CreateDeviceActivity : AppCompatActivity() {
             // Save a file: path for use with ACTION_VIEW intents
             currentPhotoPath = absolutePath
         }
+    }
+
+    fun importFromFile(view: View) {
+        Log.d("CLICK", "${view.id} button clicked")
+
+        val fileIntent = Intent(Intent.ACTION_GET_CONTENT)
+        fileIntent.type = "application/octet-stream"
+        fileIntent.addCategory(Intent.CATEGORY_OPENABLE)
+        fileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+        val finalIntent = Intent.createChooser(fileIntent, "Select a .json file to import")
+        startActivityForResult(finalIntent, uploadFileRequestCode)
     }
 
 

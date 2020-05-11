@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import nz.ac.uclive.itw21.project2.ui.CreateDeviceActivity
+import nz.ac.uclive.itw21.project2.ui.DeviceAdapter
 import nz.ac.uclive.itw21.project2.ui.DeviceFragment
 import nz.ac.uclive.itw21.project2.ui.SettingsActivity
 

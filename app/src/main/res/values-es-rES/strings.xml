@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">Talley</string>
     <string name="logo_description">Logo de Talley</string>
+
+    <!--  Headers  -->
     <string name="header_create_profile">Crea Tu Perfil</string>
     <string name="header_devices">Mis Dispositivos</string>
     <string name="header_add_a_device">Agregue un Dispositivo</string>
@@ -17,10 +19,12 @@
     <string name="header_notification_one_month">"1 Meses "</string>
     <string name="header_notification_one_week">1 Semanas</string>
     <string name="header_notification_one_the_day">Al día</string>
+
+    <!--  Text Prompts  -->
     <string name="prompt_name">Nombre</string>
     <string name="prompt_email_address">Dirección de Correo Electrónico</string>
     <string name="prompt_contact_number">Número de Contacto</string>
-    <string name="prompt_purchase_date">Fecha de Compra</string>
+    <string name="prompt_purchase_date">Comprado</string>
     <string name="prompt_warranty_period">Período de Garantía</string>
     <string name="prompt_delete_device">¿Estás seguro de que quieres eliminar?</string>
     <string name="prompt_device_name">Nombre del Dispositivo</string>
@@ -31,7 +35,12 @@
     <string name="prompt_device_date_of_purchase">Fecha de Compra</string>
     <string name="format_purchase_date">Comprado: %1$s</string>
     <string name="format_warranty_period">Período de Garantía: %1$s</string>
+
+    <!--  Button Text  -->
     <string name="button_save">Salvar</string>
+    <string name="button_import">Importar desde archivo</string>
+
+    <!--  Descriptions  -->
     <string name="description_clock">Tiempo restante</string>
     <string name="description_price">Precio</string>
     <string name="description_expand_arrow">Mostrar/Ocultar más detalles</string>
@@ -41,4 +50,10 @@
     <string name="description_device_delete">Eliminar Dispositivo</string>
     <string name="description_settings">Configuraciones</string>
     <string name="description_notification_frequency">Establecer la frecuencia de notificación</string>
+    <string name="description_send_email">Enviar correo electrónico…</string>
+    <string name="description_email_subject">Talley - %1$s</string>
+
+    <!--  Errors  -->
+    <string name="error_failed_to_save_file">Error al guardar el archivo</string>
+    <string name="error_cannot_read_file">No se puede leer el archivo</string>
 </resources>
