@@ -80,7 +80,6 @@ class ExportImportData {
                     }
                 }
             }
-            Log.d("ITW_DEBUG", stringBuilder.toString())
             device = gson.fromJson(stringBuilder.toString(), Device::class.java)
         } catch (fileNotFound: FileNotFoundException) {
             Log.d("ITW_DEBUG", "FILE NOT FOUND")
