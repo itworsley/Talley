@@ -18,6 +18,8 @@
     <string name="header_notification_one_month">1 Month</string>
     <string name="header_notification_one_week">1 Week</string>
     <string name="header_notification_one_the_day">On the day</string>
+    <string name="header_add">Add</string>
+    <string name="header_add_disabled">Add device disabled</string>
 
 
     <!--  Text Prompts  -->

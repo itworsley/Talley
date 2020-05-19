@@ -15,7 +15,6 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.google.android.material.textfield.TextInputEditText
 import nz.ac.uclive.itw21.project2.R
@@ -45,11 +44,12 @@ class CreateDeviceActivity : AppCompatActivity() {
     private lateinit var deviceDateOfPurchase: TextInputEditText
 
     private lateinit var warrantyUnit: String
-    private lateinit var imageView: ImageView
+    private lateinit var deviceImageView: ImageView
+    private lateinit var receiptImageView: ImageView
 
-
-
-    private lateinit var imageUri: Uri
+    private var currentlyDeviceImage: Boolean = false
+    private var deviceImageUri: Uri = Uri.EMPTY
+    private var receiptImageUri: Uri = Uri.EMPTY
     private lateinit var currentPhotoPath: String
 
     private val permissionCode = 1000
@@ -59,6 +59,11 @@ class CreateDeviceActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_device)
+
+        if (savedInstanceState != null ) {
+            deviceImageUri = savedInstanceState.getParcelable("deviceImageUri")!!
+            receiptImageUri = savedInstanceState.getParcelable("receiptImageUri")!!
+        }
 
         setSupportActionBar(findViewById(R.id.tool_bar))
         supportActionBar?.setTitle(R.string.header_add_a_device)
@@ -75,18 +80,36 @@ class CreateDeviceActivity : AppCompatActivity() {
         deviceWarrantyValue = findViewById(R.id.text_input_warranty_period)
         deviceDateOfPurchase = findViewById(R.id.text_input_date_of_purchase)
 
-        findViewById<ImageView>(R.id.device_image).setOnClickListener {
-            imageView = it as ImageView
+        deviceImageView = findViewById(R.id.device_image)
+        receiptImageView = findViewById(R.id.device_receipt)
+
+        deviceImageView.setOnClickListener {
+            currentlyDeviceImage = true
             handleAddPhotos()
         }
-        findViewById<ImageView>(R.id.device_receipt).setOnClickListener {
-            imageView = it as ImageView
+        receiptImageView.setOnClickListener {
+            currentlyDeviceImage = false
             handleAddPhotos()
+        }
+
+        if (deviceImageUri != Uri.EMPTY) {
+            deviceImageView.foreground = null
+            deviceImageView.setImageURI(deviceImageUri)
+        }
+        if (receiptImageUri != Uri.EMPTY) {
+            receiptImageView.foreground = null
+            receiptImageView.setImageURI(receiptImageUri)
         }
 
         setUpTypeDropdown()
         setUpWarrantyUnitDropdown()
         setUpDateClicker()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable("deviceImageUri", deviceImageUri)
+        outState.putParcelable("receiptImageUri", receiptImageUri)
     }
 
     private fun setUpTypeDropdown() {
@@ -206,7 +229,10 @@ class CreateDeviceActivity : AppCompatActivity() {
                         "nz.ac.uclive.itw21.project2",
                         it
                     )
-                    imageUri = photoURI
+                    when(currentlyDeviceImage) {
+                        true -> deviceImageUri = photoURI
+                        false -> receiptImageUri = photoURI
+                    }
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, imageRequestCode)
                 }
@@ -233,10 +259,18 @@ class CreateDeviceActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == imageRequestCode && resultCode == Activity.RESULT_OK) {
-
-            imageView.foreground = null
-            imageView.setImageURI(imageUri)
-            imageView.tag = imageUri.toString()
+            when(currentlyDeviceImage) {
+                true -> {
+                    deviceImageView.foreground = null
+                    deviceImageView.setImageURI(deviceImageUri)
+                    deviceImageView.tag = deviceImageUri.toString()
+                }
+                false -> {
+                    receiptImageView.foreground = null
+                    receiptImageView.setImageURI(receiptImageUri)
+                    receiptImageView.tag = receiptImageUri.toString()
+                }
+            }
         }
 
         if (requestCode == uploadFileRequestCode && resultCode == Activity.RESULT_OK) {
@@ -262,7 +296,6 @@ class CreateDeviceActivity : AppCompatActivity() {
             ".jpg",
             storageDir
         ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
             currentPhotoPath = absolutePath
         }
     }

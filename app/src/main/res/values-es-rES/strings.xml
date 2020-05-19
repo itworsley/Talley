@@ -19,6 +19,9 @@
     <string name="header_notification_one_month">"1 Meses "</string>
     <string name="header_notification_one_week">1 Semanas</string>
     <string name="header_notification_one_the_day">Al día</string>
+    <string name="header_add">Añadir</string>
+    <string name="header_add_disabled">Agregar dispositivo deshabilitado</string>
+
 
     <!--  Text Prompts  -->
     <string name="prompt_name">Nombre</string>
