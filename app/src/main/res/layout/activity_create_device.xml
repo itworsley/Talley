@@ -85,13 +85,12 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_layout_vendor"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="15dp"
-                    android:layout_marginEnd="20dp"
                     android:hint="@string/prompt_device_vendor"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline8"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/device_type_dropdown">
 
@@ -100,10 +99,20 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textCapWords"
-
                         android:paddingTop="25dp"
                         android:paddingBottom="5dp" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageButton
+                    android:id="@+id/button_get_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_my_location_black_24dp"
+                    android:contentDescription="@string/description_get_location"
+                    android:layout_marginTop="18dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/text_layout_vendor"
+                    app:layout_constraintTop_toBottomOf="@+id/device_type_dropdown" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_layout_price"
@@ -277,6 +286,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintGuide_begin="170dp" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="100sp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

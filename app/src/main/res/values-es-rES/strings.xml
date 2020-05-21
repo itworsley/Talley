@@ -52,6 +52,7 @@
     <string name="description_device_expand_collapse">Expandir/Contraer Detalles del Dispositivo</string>
     <string name="description_device_delete">Eliminar Dispositivo</string>
     <string name="description_settings">Configuraciones</string>
+    <string name="description_get_location">Obtener Ubicación</string>
     <string name="description_notification_frequency">Establecer la frecuencia de notificación</string>
     <string name="description_send_email">Enviar correo electrónico…</string>
     <string name="description_email_subject">Talley - %1$s</string>
@@ -59,4 +60,5 @@
     <!--  Errors  -->
     <string name="error_failed_to_save_file">Error al guardar el archivo</string>
     <string name="error_cannot_read_file">No se puede leer el archivo</string>
+    <string name="error_no_places_found">No se encontró ningún lugar cercano</string>
 </resources>

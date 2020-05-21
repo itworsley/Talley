@@ -1,5 +1,7 @@
 package nz.ac.uclive.itw21.project2.ui
 
+import android.Manifest
+import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
@@ -15,7 +17,15 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import com.google.android.gms.tasks.Task
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
+import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.textfield.TextInputEditText
 import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Device
@@ -53,6 +63,7 @@ class CreateDeviceActivity : AppCompatActivity() {
     private lateinit var currentPhotoPath: String
 
     private val permissionCode = 1000
+    private val locationPermissionCode = 1005
     private val imageRequestCode = 1001
     private val uploadFileRequestCode = 1002
 
@@ -104,6 +115,44 @@ class CreateDeviceActivity : AppCompatActivity() {
         setUpTypeDropdown()
         setUpWarrantyUnitDropdown()
         setUpDateClicker()
+        findViewById<ImageButton>(R.id.button_get_location).setOnClickListener{ handleGetPlacesDetails() }
+    }
+
+    private fun handleGetPlacesDetails() {
+        if (checkSelfPermission(ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), locationPermissionCode)
+        } else {
+            getPlacesDetails()
+        }
+    }
+
+    private fun getPlacesDetails() {
+
+        // This API key is restricted to solely on this application, with its own SHA-1 certificate.
+        // I will remove the API credential once the project has been marked.
+        Places.initialize(applicationContext, "AIzaSyAzXMoRnyq7qbu_xRhpvLfk4gvd3_eCOps")
+
+
+        val placesClient: PlacesClient = Places.createClient(this)
+        val placeFields: List<Place.Field> = Collections.singletonList(Place.Field.NAME)
+        val request: FindCurrentPlaceRequest = FindCurrentPlaceRequest.newInstance(placeFields)
+
+        if (ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            val placeResponse: Task<FindCurrentPlaceResponse> =
+                placesClient.findCurrentPlace(request)
+            placeResponse.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val response: FindCurrentPlaceResponse? = task.result
+                    if (response != null) {
+                        this.deviceVendor.setText(response.placeLikelihoods[0].place.name)
+                    }
+                } else {
+                    Toast.makeText(this, getString(R.string.error_no_places_found), Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            handleGetPlacesDetails()
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -194,14 +243,10 @@ class CreateDeviceActivity : AppCompatActivity() {
     }
 
     private fun handleAddPhotos() {
-        if (checkSelfPermission(android.Manifest.permission.CAMERA) ==
-            PackageManager.PERMISSION_DENIED || checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
-            PackageManager.PERMISSION_DENIED) {
+        if (checkSelfPermission(Manifest.permission.CAMERA) ==
+            PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             // Request permissions
-            val permission = arrayOf(
-                android.Manifest.permission.CAMERA,
-                android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
+            val permission = arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             requestPermissions(permission, permissionCode)
         } else {
             // Permission already granted
@@ -250,7 +295,11 @@ class CreateDeviceActivity : AppCompatActivity() {
         when (requestCode) {
             permissionCode -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 openCamera()
-            } else {
+            }
+            locationPermissionCode -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getPlacesDetails()
+            }
+            else {
                 Toast.makeText(this, "Permission denied...", Toast.LENGTH_SHORT).show()
             }
         }
@@ -336,7 +385,7 @@ class CreateDeviceActivity : AppCompatActivity() {
             return
         }
 
-        var warrantyAsLong: Long
+        val warrantyAsLong: Long
         try {
             warrantyAsLong = warrantyValue.toLong()
         } catch (_: Exception) {
@@ -363,10 +412,10 @@ class CreateDeviceActivity : AppCompatActivity() {
 
         val c = Calendar.getInstance()
         try {
-            c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(dateOfPurchase)
+            c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(dateOfPurchase)!!
         } catch (_: Exception) {
             // Parse a default date so doesn't crash.
-            c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse("01/01/2000")
+            c.time = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse("01/01/2000")!!
         }
 
         c.add(Calendar.DAY_OF_MONTH, warrantyDays.toInt())
