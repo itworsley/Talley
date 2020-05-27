@@ -3,17 +3,13 @@ package nz.ac.uclive.itw21.project2.ui
 import android.content.Intent
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.AnimatedVectorDrawable
-import android.graphics.drawable.AnimationDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.textfield.TextInputEditText
 import nz.ac.uclive.itw21.project2.MainActivity
 import nz.ac.uclive.itw21.project2.R
@@ -31,12 +27,6 @@ class CreateProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_profile)
         profileViewModel = ProfileViewModel(application)
 
-//        val logo = findViewById<ImageView>(R.id.app_logo_createProfile)
-//        logo.apply {
-//            foreground = null
-//            setBackgroundResource(R.drawable.logo_animate)
-//        }
-
         profileViewModel.profile.observe(this, Observer { profile ->
             // If a profile exists, then skip the profile creation screen.
             if (profile?.uid != null) {
@@ -48,13 +38,8 @@ class CreateProfileActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
-
         val logoAnimation = findViewById<ImageView>(R.id.app_logo_createProfile).drawable as Animatable
         logoAnimation.start()
-//
-//        animation = logoAnimation as AnimatedVectorDrawable
-//        animation.start()
     }
 
 
