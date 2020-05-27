@@ -1,11 +1,16 @@
 package nz.ac.uclive.itw21.project2
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import nz.ac.uclive.itw21.project2.helper.ManageNotifications
 import nz.ac.uclive.itw21.project2.ui.CreateDeviceActivity
 import nz.ac.uclive.itw21.project2.ui.DeviceAdapter
 import nz.ac.uclive.itw21.project2.ui.DeviceFragment
@@ -19,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.tool_bar))
         supportActionBar?.setDisplayShowTitleEnabled(false)
         loadFragment(DeviceFragment())
+        createNotificationChannel()
     }
 
     private fun loadFragment(fragment: Fragment?): Boolean {
@@ -32,6 +38,16 @@ class MainActivity : AppCompatActivity() {
         }
         return false
     }
+
+    private fun createNotificationChannel() {
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(Notification.CATEGORY_REMINDER, "Device Notifications", importance).apply {
+            description = "Show notifications when you create a certain number of devices"
+        }
+        val notificationManager: NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+
 
     fun showCreateDeviceActivity(view: View) {
         Log.d("CLICK", "${view.id} button clicked")

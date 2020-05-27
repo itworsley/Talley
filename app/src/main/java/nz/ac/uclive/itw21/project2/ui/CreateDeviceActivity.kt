@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.preference.PreferenceManager
 import com.google.android.gms.tasks.Task
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -31,6 +32,7 @@ import nz.ac.uclive.itw21.project2.R
 import nz.ac.uclive.itw21.project2.database.Device
 import nz.ac.uclive.itw21.project2.database.DeviceViewModel
 import nz.ac.uclive.itw21.project2.helper.ExportImportData
+import nz.ac.uclive.itw21.project2.helper.ManageNotifications
 import nz.ac.uclive.itw21.project2.helper.validateStrings
 import java.io.File
 import java.io.IOException
@@ -400,6 +402,15 @@ class CreateDeviceActivity : AppCompatActivity() {
         deviceViewModel.insert(device).invokeOnCompletion {
             finish()
         }
+
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        val devicesCreated = prefs.getInt("number_devices_created", 0) + 1
+        with (prefs.edit()) {
+            putInt("number_devices_created", devicesCreated)
+            commit()
+        }
+
+        ManageNotifications.instance.initialiseNotifications(this, application)
     }
 
     private fun calculateWarrantyEndDate(warrantyValue: Long, warrantyUnit: String, dateOfPurchase: String): String {

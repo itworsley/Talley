@@ -13,12 +13,11 @@
     <string name="header_settings">Configuraciones</string>
     <string name="header_notifications">Notificaciones</string>
     <string name="header_enable_notifications">Permitir Notificaciones</string>
-    <string name="header_notification_frequency">Frecuencia de Notificación</string>
-    <string name="header_notification_one_year">1 Año</string>
-    <string name="header_notification_six_months">6 Meses</string>
-    <string name="header_notification_one_month">"1 Meses "</string>
-    <string name="header_notification_one_week">1 Semanas</string>
-    <string name="header_notification_one_the_day">Al día</string>
+    <string name="header_notification_5th">5to Dispositivo Creado</string>
+    <string name="header_notification_10th">Décimo Dispositivo Creado</string>
+    <string name="header_notification_25th">25to Dispositivo Creado</string>
+    <string name="header_notification_50th">50to Dispositivo Creado</string>
+    <string name="header_notification_100th">Dispositivo Número 100 Creado</string>
     <string name="header_add">Añadir</string>
     <string name="header_add_disabled">Agregar dispositivo deshabilitado</string>
 
@@ -36,8 +35,12 @@
     <string name="prompt_device_price">Precio</string>
     <string name="prompt_device_warranty_period">Período de Garantía</string>
     <string name="prompt_device_date_of_purchase">Fecha de Compra</string>
+
+    <!--  Format Strings  -->
     <string name="format_purchase_date">Comprado: %1$s</string>
     <string name="format_warranty_period">Período de Garantía: %1$s</string>
+    <string name="format_device_created_notification">Dispositivo creado</string>
+    <string name="format_device_number_created_notification">Ya has creado %1$s dispositivos!</string>
 
     <!--  Button Text  -->
     <string name="button_save">Salvar</string>

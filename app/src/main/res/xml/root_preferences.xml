@@ -8,6 +8,35 @@
         <SwitchPreferenceCompat
             app:key="enable_notifications"
             app:title="@string/header_enable_notifications" />
+
+        <SwitchPreferenceCompat
+            app:key="5th_device"
+            app:dependency="enable_notifications"
+            app:title="@string/header_notification_5th" />
+
+        <SwitchPreferenceCompat
+            app:key="10th_device"
+            app:dependency="enable_notifications"
+            app:title="@string/header_notification_10th" />
+
+
+        <SwitchPreferenceCompat
+            app:key="25th_device"
+            app:dependency="enable_notifications"
+            app:title="@string/header_notification_25th" />
+
+
+        <SwitchPreferenceCompat
+            app:key="50th_device"
+            app:dependency="enable_notifications"
+            app:title="@string/header_notification_50th" />
+
+        <SwitchPreferenceCompat
+            app:key="100th_device"
+            app:dependency="enable_notifications"
+            app:title="@string/header_notification_100th" />
+
+
     </PreferenceCategory>
 
 </PreferenceScreen>
