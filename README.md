@@ -4,4 +4,4 @@
 
 Currently, Talley is still in development. 
 
-One of the main features if Talley that I have been trying to implement is automated notifications for when your device's warranty is about to expire. This is currently not included in this version.
+One of the main features if Talley that I have been trying to implement is automated notifications for when your device's warranty is about to expire. This is currently not working as expected, but located in the `frequent_notifications` branch.
